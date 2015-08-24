@@ -50,12 +50,18 @@ function drawBoard() {
 
   // draw grid lines.
   CTX.stokeStyle = "black";
-  for (var x = 0; x < GRID; x++) {
-    for (var y = 0; y < GRID; y++) {
-      var xx = SIZE / 2 + x * SIZE;
-      var yy = SIZE / 2 + y * SIZE;
-      CTX.strokeRect(xx, yy, SIZE, SIZE);
-    }
+  for (var x = SIZE / 2; x < WIDTH; x += SIZE) {
+    CTX.beginPath();
+    CTX.moveTo(x, SIZE / 2);
+    CTX.lineTo(x, HEIGHT - SIZE / 2);
+    CTX.stroke();
+  }
+
+  for (var y = SIZE / 2; y < HEIGHT; y += SIZE) {
+    CTX.beginPath();
+    CTX.moveTo(SIZE / 2, y);
+    CTX.lineTo(WIDTH - SIZE / 2, y);
+    CTX.stroke();
   }
 
   // mouse hover dot
