@@ -18,6 +18,9 @@ var CELLS = [];
 
 var TURN = "white";
 
+var RANDOM_MOVE = 100;
+var DO_RANDOM = false;
+
 var EMPTY = {
   color: undefined
 }
@@ -43,6 +46,10 @@ function canvas() {
   populateCells();
 
   drawBoard();
+
+  if (DO_RANDOM) {
+    setInterval(randomMove, RANDOM_MOVE);
+  }
 }
 
 function drawBoard() {
@@ -313,4 +320,22 @@ function getNeighbors(x, y) {
   }
 
   return neighbors;
+}
+
+function randomMove() {
+  var x = Math.round(Math.random() * GRID);
+  var y = Math.round(Math.random() * GRID);
+
+  var cell = CELLS[x][y];
+  if (cell.stone === EMPTY) {
+    if (TURN === "white") {
+      cell.stone = WHITE;
+      TURN = "black";
+    } else if (TURN === "black") {
+      cell.stone = BLACK;
+      TURN = "white";
+    }
+  }
+
+  processBoard();
 }
