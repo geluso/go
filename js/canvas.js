@@ -41,6 +41,17 @@ function canvas() {
   $(canvas).mousemove(mousemove);
 
   populateCells();
+
+  CELLS[0][1].stone = WHITE;
+  CELLS[1][0].stone = WHITE;
+  CELLS[1][1].stone = WHITE;
+
+  CELLS[0][2].stone = BLACK;
+  CELLS[1][2].stone = BLACK;
+
+  CELLS[3][0].stone = WHITE;
+  CELLS[3][1].stone = WHITE;
+
   drawBoard();
 }
 
@@ -164,22 +175,107 @@ function processBoard() {
   for (var x = 0; x < GRID; x++) {
     for (var y = 0; y < GRID; y++) {
       var cell = CELLS[x][y];
-      var neighbors = getNeighbors(cell.x, cell.y);
 
-      var liberties = 0;
-      for (var i = 0; i < neighbors.length; i++) {
-        var neighbor = neighbors[i];
-        if (neighbor.stone === EMPTY) {
-          liberties++;
-        }
+      if (cell.stone === EMPTY) {
+        continue;
       }
 
+      var network = getNetwork(cell);
+      var liberties = countNetworkLiberties(network);
+
       if (liberties === 0) {
-        cell.stone = EMPTY
+        killNetwork(network);
+      }
+    }
+  }
+}
+
+function countNetworkLiberties(network) {
+  var liberties = 0;
+
+  for (var i = 0; i < network.length; i++) {
+    var cell = network[i];
+    liberties += countCellLiberties(cell);
+  }
+
+  return liberties;
+}
+
+function countCellLiberties(cell) {
+  var neighbors = getCellNeighbors(cell);
+  var liberties = 0;
+
+  for (var i = 0; i < neighbors.length; i++) {
+    if (neighbors[i].stone === EMPTY) {
+      liberties++;
+    }
+  }
+
+  return liberties;
+}
+
+function killNetwork(network) {
+  for (var i = 0; i < network.length; i++) {
+    var cell = network[i];
+    cell.stone = EMPTY;
+  }
+}
+
+function groupStones() {
+  var networks = [];
+
+  for (var x = 0; x < CELLS.length; x++) {
+    for (var y = 0; y < CELLS[x].length; y++) {
+      var cell = CELLS[x][y];
+
+      if (!cell.visited) {
+        if (cell.stone !== EMPTY) {
+          var network = getNetwork(cell);
+          networks.push(network);
+        }
       }
     }
   }
 
+  clearVisited();
+
+  return networks;
+}
+
+function getNetwork(cell) {
+  var network = _getNetwork(cell);
+  clearVisited();
+  return network;
+}
+
+function _getNetwork(cell) {
+  if (cell.visited) {
+    return [];
+  }
+
+  var network = [cell];
+  cell.visited = true;
+
+  var neighbors = getCellNeighbors(cell);
+
+  for (var i = 0; i < neighbors.length; i++) {
+    var neighbor = neighbors[i];
+
+    // same color, non-empty.
+    if (!neighbor.visited && neighbor.stone === cell.stone) {
+      network.push.apply(network, _getNetwork(neighbor));
+    }
+  }
+
+  return network;
+}
+
+function clearVisited() {
+  for (var x = 0; x < CELLS.length; x++) {
+    for (var y = 0; y < CELLS[x].length; y++) {
+      CELLS[x][y].visited = false;
+    }
+  }
 }
 
 function getCell(x, y) {
@@ -192,6 +288,10 @@ function getCell(x, y) {
 
   var cell = CELLS[x][y];
   return cell;
+}
+
+function getCellNeighbors(cell) {
+  return getNeighbors(cell.x, cell.y);
 }
 
 function getNeighbors(x, y) {
