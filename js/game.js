@@ -1,0 +1,2 @@
+var TURN = "white";
+
