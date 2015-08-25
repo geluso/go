@@ -8,7 +8,7 @@ var STONE_SIZE = 32;
 
 var HOVER_RADIUS = 2;
 
-var WIDTH = (GRID + 1) * SIZE;
+var WIDTH = (GRID) * SIZE;
 var HEIGHT = WIDTH;
 
 var MOUSE_X = 0;
@@ -41,16 +41,6 @@ function canvas() {
   $(canvas).mousemove(mousemove);
 
   populateCells();
-
-  CELLS[0][1].stone = WHITE;
-  CELLS[1][0].stone = WHITE;
-  CELLS[1][1].stone = WHITE;
-
-  CELLS[0][2].stone = BLACK;
-  CELLS[1][2].stone = BLACK;
-
-  CELLS[3][0].stone = WHITE;
-  CELLS[3][1].stone = WHITE;
 
   drawBoard();
 }
@@ -117,22 +107,25 @@ function drawHover() {
   var xx = Math.round(x / SIZE) * SIZE + SIZE / 2;
   var yy = Math.round(y / SIZE) * SIZE + SIZE / 2;
 
-  var radius = HOVER_RADIUS; // Arc radius
+  var radius = STONE_SIZE / 2; // Arc radius
   var startAngle = 0; // Starting point on circle
   var endAngle = 2 * Math.PI; // End point on circle
 
   var path = new Path2D();
   path.arc(xx, yy, radius, startAngle, endAngle);
 
-  CTX.fillStyle = "red";
-  CTX.fill(path);
-
   var color;
   if (TURN === "black") {
-    color = "rgba(0,0,0,.5)";
+    color = "rgba(0,0,0, .7)";
   } else {
-    color = "rgba(255,255,255,.5)";
+    color = "rgba(255,255,255, .7)";
   }
+
+  CTX.fillStyle = color;
+  CTX.fill(path);
+
+  CTX.strokeStyle = "rgba(0,0,0,.7)";
+  CTX.stroke(path);
 }
 
 function mousemove(e) {
@@ -182,6 +175,8 @@ function processBoard() {
 
       var network = getNetwork(cell);
       var liberties = countNetworkLiberties(network);
+
+      clearVisited();
 
       if (liberties === 0) {
         killNetwork(network);
