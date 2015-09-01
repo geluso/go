@@ -1,5 +1,5 @@
 var TURN = "white";
-var ATARI = false;
+var KO = false;
 
 var WHITE_CAPTURES = 0;
 var BLACK_CAPTURES = 0;
@@ -13,11 +13,11 @@ function nextTurn() {
 }
 
 function reportNoLiberties() {
-  message("no liberties. cannot place stone.");
+  message("No liberties. Cannot place stone.");
 }
 
-function reportAtari() {
-  message("atari! cannot place stone.");
+function reportKo() {
+  message("Ko! Cannot place stone.");
 }
 
 function message(msg) {

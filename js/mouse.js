@@ -12,13 +12,13 @@ function click(e) {
 
   var cell = getCell(x, y);
 
-  if (ATARI && ATARI.x === cell.x && ATARI.y === cell.y) {
-    reportAtari();
+  if (KO && KO.x === cell.x && KO.y === cell.y) {
+    reportKo();
     return;
   }
 
-  // reset ATARI
-  ATARI = false;
+  // reset KO
+  KO = false;
 
   if (cell.stone === EMPTY) {
     placeStone(cell, TURN);

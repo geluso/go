@@ -70,9 +70,9 @@ function processBoard() {
         stonesKilled += network.length;
 
         if (stonesKilled === 1) {
-          ATARI = network[0];
+          KO = network[0];
         } else if (stonesKilled > 1) {
-          ATARI = false;
+          KO = false;
         }
       }
     }
