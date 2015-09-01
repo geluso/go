@@ -20,9 +20,10 @@ function populateCells() {
 }
 
 function placeStone(cell, color) {
-  if (color === "white") {
+  color = color[0].toUpperCase();
+  if (color === "W") {
     cell.stone = WHITE;
-  } else if (color === "black") {
+  } else if (color === "B") {
     cell.stone = BLACK;
   }
 
@@ -217,4 +218,26 @@ function saveBoard() {
 
 function loadBoard() {
 
+}
+
+function printBoard() {
+  var grid = "";
+  for (var y = 0; y < GRID; y++) {
+    var row = "";
+
+    for (var x = 0; x < GRID; x++) {
+      var cell = CELLS[x][y];
+      if (cell.stone === EMPTY) {
+        row += ".";
+      } else if (cell.stone === WHITE) {
+        row += "W";
+      } else if (cell.stone === BLACK) {
+        row += "B";
+      }
+    }
+
+    grid += row + "\n";
+  }
+
+  console.log(grid);
 }
