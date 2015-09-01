@@ -1,9 +1,9 @@
 var CELLS = [];
 
 function populateCells() {
-  for (var x = 0; x < SIZE; x++) {
+  for (var x = 0; x < GRID; x++) {
     CELLS[x] = [];
-    for (var y = 0; y < SIZE; y++) {
+    for (var y = 0; y < GRID; y++) {
       CELLS[x][y] = {
         stone: EMPTY,
         x: x,
@@ -176,3 +176,11 @@ function getNeighbors(x, y) {
   return neighbors;
 }
 
+
+function saveBoard() {
+
+}
+
+function loadBoard() {
+
+}
