@@ -17,11 +17,6 @@ function populateCells() {
       };
     }
   }
-
-  CELLS[0][0].stone = BLACK;
-  CELLS[1][0].stone = WHITE;
-  CELLS[1][1].stone = WHITE;
-  CELLS[0][2].stone = WHITE;
 }
 
 function placeStone(cell, color) {
