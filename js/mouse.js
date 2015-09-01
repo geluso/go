@@ -15,14 +15,13 @@ function click(e) {
 
   var cell = getCell(x, y);
 
-  if (countNetworkLiberties([cell]) === 0) {
-    reportNoLiberties();
-  }
-
   if (ATARI && ATARI.x === cell.x && ATARI.y === cell.y) {
     reportAtari();
     return;
   }
+
+  // reset ATARI
+  ATARI = false;
 
   if (cell.stone === EMPTY) {
     if (TURN === "white") {
@@ -30,17 +29,22 @@ function click(e) {
     } else if (TURN === "black") {
       cell.stone = BLACK;
     }
+  }
 
-    ATARI = false;
-    var stonesKilled = processBoard();
+  var stonesKilled = processBoard();
 
-    if (TURN === "white") {
-      WHITE_CAPTURES += stonesKilled;
-      TURN = "black";
-    } else if (TURN === "black") {
-      BLACK_CAPTURES += stonesKilled;
-      TURN = "white";
-    }
+  if (countNetworkLiberties([cell]) === 0) {
+    reportNoLiberties();
+    cell.stone = EMPTY;
+    return;
+  }
+
+  if (TURN === "white") {
+    WHITE_CAPTURES += stonesKilled;
+    TURN = "black";
+  } else if (TURN === "black") {
+    BLACK_CAPTURES += stonesKilled;
+    TURN = "white";
   }
 
   $(".scores .white").text(WHITE_CAPTURES);
