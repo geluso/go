@@ -14,6 +14,8 @@ function populateCells() {
 }
 
 function processBoard() {
+  var stonesKilled = 0;
+
   for (var x = 0; x < GRID; x++) {
     for (var y = 0; y < GRID; y++) {
       var cell = CELLS[x][y];
@@ -29,9 +31,19 @@ function processBoard() {
 
       if (liberties === 0) {
         killNetwork(network);
+        stonesKilled += network.length;
+
+        if (stonesKilled === 1) {
+          ATARI = network[0];
+          setAtari(ATARI);
+        } else if (stonesKilled > 1) {
+          ATARI = false;
+        }
       }
     }
   }
+
+  return stonesKilled;
 }
 
 function countNetworkLiberties(network) {
