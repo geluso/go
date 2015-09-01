@@ -16,7 +16,10 @@ function main() {
 
   drawBoard();
 
-  if (DO_RANDOM) {
+  if (DO_FAMOUS) {
+    famousGame();
+  } else if (DO_RANDOM) {
     setInterval(randomMove, RANDOM_MOVE_RATE);
   }
+
 }
