@@ -1,6 +1,8 @@
 $(document).ready(main);
 
 function main() {
+  updateScores();
+
   var canvas = document.getElementById("canvas");
   canvas.width = WIDTH;
   canvas.height = HEIGHT;

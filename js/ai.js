@@ -7,14 +7,11 @@ function randomMove() {
 
   var cell = CELLS[x][y];
   if (cell.stone === EMPTY) {
-    if (TURN === "white") {
-      cell.stone = WHITE;
-      TURN = "black";
-    } else if (TURN === "black") {
-      cell.stone = BLACK;
-      TURN = "white";
-    }
+    placeStone(cell, TURN);
+
+    processBoard();
+
+    nextTurn();
   }
 
-  processBoard();
 }

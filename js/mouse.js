@@ -1,6 +1,3 @@
-var WHITE_CAPTURES = 0;
-var BLACK_CAPTURES = 0;
-
 var MOUSE_X = 0;
 var MOUSE_Y = 0;
 
@@ -24,14 +21,10 @@ function click(e) {
   ATARI = false;
 
   if (cell.stone === EMPTY) {
-    if (TURN === "white") {
-      cell.stone = WHITE;
-    } else if (TURN === "black") {
-      cell.stone = BLACK;
-    }
+    placeStone(cell, TURN);
   }
 
-  var stonesKilled = processBoard();
+  var stonesKilled = processBoard(cell);
 
   if (countNetworkLiberties([cell]) === 0) {
     reportNoLiberties();
@@ -41,13 +34,12 @@ function click(e) {
 
   if (TURN === "white") {
     WHITE_CAPTURES += stonesKilled;
-    TURN = "black";
   } else if (TURN === "black") {
     BLACK_CAPTURES += stonesKilled;
-    TURN = "white";
   }
 
-  $(".scores .white").text(WHITE_CAPTURES);
-  $(".scores .black").text(BLACK_CAPTURES);
+  nextTurn();
+
+  updateScores();
 }
 

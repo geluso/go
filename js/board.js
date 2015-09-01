@@ -1,4 +1,8 @@
 var CELLS = [];
+var PLACING_STONE = {
+  x: undefined,
+  y: undefined
+};
 
 function populateCells() {
   for (var x = 0; x < GRID; x++) {
@@ -13,7 +17,17 @@ function populateCells() {
   }
 }
 
-function processBoard() {
+function placeStone(cell, color) {
+  if (color === "white") {
+    cell.stone = WHITE;
+  } else if (color === "black") {
+    cell.stone = BLACK;
+  }
+
+  PLACING_STONE = cell;
+}
+
+function processBoard(cell) {
   var stonesKilled = 0;
 
   for (var x = 0; x < GRID; x++) {
@@ -35,7 +49,6 @@ function processBoard() {
 
         if (stonesKilled === 1) {
           ATARI = network[0];
-          setAtari(ATARI);
         } else if (stonesKilled > 1) {
           ATARI = false;
         }
@@ -58,6 +71,10 @@ function countNetworkLiberties(network) {
 }
 
 function countCellLiberties(cell) {
+  if (cell.x === PLACING_STONE.x && cell.y === PLACING_STONE.y) {
+    return Infinity;
+  }
+
   var neighbors = getCellNeighbors(cell);
   var liberties = 0;
 

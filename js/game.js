@@ -1,12 +1,19 @@
 var TURN = "white";
 var ATARI = false;
 
-function reportNoLiberties() {
-  message("no liberties. cannot place stone.");
+var WHITE_CAPTURES = 0;
+var BLACK_CAPTURES = 0;
+
+function nextTurn() {
+  if (TURN === "white") {
+    TURN = "black";
+  } else if (TURN === "black") {
+    TURN = "white";
+  }
 }
 
-function setAtari(cell) {
-  message("possible atari at " + cell.x + " " + cell.y);
+function reportNoLiberties() {
+  message("no liberties. cannot place stone.");
 }
 
 function reportAtari() {
@@ -16,3 +23,9 @@ function reportAtari() {
 function message(msg) {
   $(".messages").text(msg);
 }
+
+function updateScores() {
+  $(".scores .white").text(WHITE_CAPTURES);
+  $(".scores .black").text(BLACK_CAPTURES);
+}
+
