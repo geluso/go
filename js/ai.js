@@ -7,11 +7,10 @@ function randomMove() {
 
   var cell = CELLS[x][y];
   if (cell.stone === EMPTY) {
-    placeStone(cell, TURN);
-
-    processBoard();
-
-    nextTurn();
+    var success = placeStone(cell, TURN);
+    if (success) {
+      nextTurn();
+    }
   }
 
 }

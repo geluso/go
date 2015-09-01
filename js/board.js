@@ -1,5 +1,7 @@
 var CELLS = [];
-var PLACING_STONE = {
+
+var PLACING_STONE = false;
+var LAST_STONE = {
   x: undefined,
   y: undefined
 };
@@ -15,6 +17,11 @@ function populateCells() {
       };
     }
   }
+
+  CELLS[0][0].stone = BLACK;
+  CELLS[1][0].stone = WHITE;
+  CELLS[1][1].stone = WHITE;
+  CELLS[0][2].stone = WHITE;
 }
 
 function placeStone(cell, color) {
@@ -24,10 +31,25 @@ function placeStone(cell, color) {
     cell.stone = BLACK;
   }
 
-  PLACING_STONE = cell;
+  LAST_STONE = cell;
+
+  PLACING_STONE = true;
+  processBoard();
+  PLACING_STONE = false;
+
+  // recheck most recently placed stones network
+  var network = getNetwork(cell);
+  var liberties = countNetworkLiberties(network);
+  if (liberties === 0) {
+    cell.stone = EMPTY;
+    reportNoLiberties();
+    return false;
+  }
+
+  return true;
 }
 
-function processBoard(cell) {
+function processBoard() {
   var stonesKilled = 0;
 
   for (var x = 0; x < GRID; x++) {
@@ -71,7 +93,7 @@ function countNetworkLiberties(network) {
 }
 
 function countCellLiberties(cell) {
-  if (cell.x === PLACING_STONE.x && cell.y === PLACING_STONE.y) {
+  if (PLACING_STONE && cell.x === LAST_STONE.x && cell.y === LAST_STONE.y) {
     return Infinity;
   }
 

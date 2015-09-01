@@ -25,6 +25,7 @@ function click(e) {
   }
 
   var stonesKilled = processBoard(cell);
+  PLACING_STONE = false;
 
   if (countNetworkLiberties([cell]) === 0) {
     reportNoLiberties();
